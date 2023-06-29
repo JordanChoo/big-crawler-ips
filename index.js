@@ -7,6 +7,7 @@ const bqProjectId = process.env.bqProjectId || null;
 const bqDataset = process.env.bqDataset || null;
 const bqTable = process.env.bqTable || null;
 const gServiceAccount = JSON.parse(process.env.gServiceAccount);
+const https = require('https');
 
 // Create bigQuery Obj
 const bigQuery = new BigQuery({
@@ -50,8 +51,35 @@ modules.exports = {
 
     },
 
-    gatherIps: async(req, res) => {
+    gatherIps: async(url) => {
 
+        // Run an HTTP req to the IP JSON file
+        https.get(url, (response) => {
+            let data = '';
+          
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+          
+            response.on('end', () => {
+              try {
+                
+                let ipsJson = JSON.parse(data);
+                console.log(ipsJson);
+                return ipsJson
+
+              } catch (error) {
+                // Console log and return error
+                console.error('Error parsing JSON:', error.message);
+                return error;
+
+              }
+            });
+          }).on('error', (error) => {
+            // Console log and return error
+            console.error('Error retrieving JSON:', error.message);
+            return error;
+          });
     },
 
     saveIps: async(req, res) => {
