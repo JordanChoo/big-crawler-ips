@@ -50,29 +50,25 @@ module.exports = {
             for (let ip = 0; ip < ips.prefixes.length; ip++) {
               // Check whether it is an IP4 or IP6
               if(!!ips.prefixes[ip].ipv4Prefix){
-                // Push the clean IPv4
-               cleanedIps.push({
-                se: seBot.se,
-                ip: ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/'))
-              });
+                // Check to see if the IPv4 address is already in BQ
+                if(!existingIps.some(el => el.ip === ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/')))){
+                  // Push the clean missing IPv4
+                  missingIps.push({
+                    se: seBot.se,
+                    ip: ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/'))
+                  });
+                }
               } else {
-                // Push the clean IPv6
-                cleanedIps.push({
-                  se: seBot.se,
-                  ip: ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/'))
-                });
+                // Check to see if the IPv6 address is already in BQ
+                if(!existingIps.some(el => el.ip === ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/')))){
+                  // Push the clean missing IPv6
+                  missingIps.push({
+                    se: seBot.se,
+                    ip: ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/'))
+                  });
+                }
               }
             }
-            // Check if existingIPS are empty
-            if(existingIps.length > 0){
-              // Loop through each item in the JSON
-                // Check to see if the IP address exists in the existingIps
-                // If not add it to missingIps
-            } else {
-              // Add all of the IPs to the missing IPs var
-              missingIps.push(...cleanedIps);
-            }
-            
         }
 
         let message;
