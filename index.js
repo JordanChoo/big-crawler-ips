@@ -38,13 +38,27 @@ module.exports = {
 
         // Get all of the existing IPs
         const existingIps = await module.exports.getExistingIps();
-
+        // Create an empty missing IPs obj
         const missingIps = [];
-
         // Go through each of the seBots
         for (const seBot of seBots) {
             // Download the JSON from the URL
             let ips = await module.exports.gatherIps(seBot.url);
+            // Create an empty obj
+            let cleanedIps = []; 
+            // Go through each of the IP addresses
+            for (let ip = 0; ip < ips.prefixes.length; ip++) {
+              // Check whether it is an IP4 or IP6
+              if(!!ips.prefixes[ip].ipv4Prefix){
+                // Push the clean IPv4
+               cleanedIps.push(ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/')));
+
+              } else {
+                // Push the clean IPv6
+                cleanedIps.push(ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/')));
+              }
+              
+            }
             // Check if existingIPS are empty
             if(existingIps.length > 0){
               // Loop through each item in the JSON
