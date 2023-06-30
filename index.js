@@ -52,12 +52,10 @@ module.exports = {
               if(!!ips.prefixes[ip].ipv4Prefix){
                 // Push the clean IPv4
                cleanedIps.push(ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/')));
-
               } else {
                 // Push the clean IPv6
                 cleanedIps.push(ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/')));
               }
-              
             }
             // Check if existingIPS are empty
             if(existingIps.length > 0){
