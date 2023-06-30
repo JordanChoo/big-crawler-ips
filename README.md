@@ -10,6 +10,7 @@ When deploying Big Crawler IPs your Cloud Function needs the following environme
 - `bqDataset`: The name of your BigQuery dataset 
 - `bqTable`: The name of your table in BigQuery
 - `gServiceAccount`: Your Google Cloud Service Account 
+- `kgKey`: A unique identifier to "authenticate" incoming HTTP requests
 
 ## How It Works
 Once the function is deployed as a Google Cloud Function that is triggered via cron job HTTP request, the function then:
