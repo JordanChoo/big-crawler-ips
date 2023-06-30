@@ -53,8 +53,21 @@ module.exports = {
 
     },
 
-    getExistingIps: async(req,res) => {
-
+    getExistingIps: async() => {
+      // Construct the query
+        let query = `
+          SELECT
+            name,
+            ip
+          FROM
+          ${bqDataset}.${bqTable}
+        `
+      // Run the query as a job
+      let [bqIpJob] = await bigquery.createQueryJob({query:query});
+      // Wait for the query to finish
+      let [existingIps] = await bqIpJob.getQueryResults();
+      // Return the rows
+      return existingIps;
     },
 
     gatherIps: async(url) => {
