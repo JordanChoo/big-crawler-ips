@@ -44,8 +44,6 @@ module.exports = {
         for (const seBot of seBots) {
             // Download the JSON from the URL
             let ips = await module.exports.gatherIps(seBot.url);
-            // Create an empty obj
-            let cleanedIps = []; 
             // Go through each of the IP addresses
             for (let ip = 0; ip < ips.prefixes.length; ip++) {
               // Check whether it is an IP4 or IP6
