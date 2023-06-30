@@ -70,6 +70,27 @@ module.exports = {
       }
     },
 
+    createBqTable: async() => {
+
+      // Set the schema for the table
+      let schema = [
+        {name: 'se', type: 'STRING'},
+        {name: 'ip', type: 'INTEGER'},
+      ];
+
+      // Set the options
+      let tableOptions = {
+        schema: schema,
+        location: 'us-central1',
+      };
+
+      // Return/run the BQ table creation
+      return await bigquery
+      .dataset(bqDataset)
+      .createTable(bqTable, tableOptions);
+      
+    },
+
     getExistingIps: async() => {
       // Construct the query
         let query = `
