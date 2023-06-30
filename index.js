@@ -40,7 +40,7 @@ module.exports = {
         // Go through each of the seBots
         for (const seBot of seBots) {
             // Download the JSON from the URL
-
+            let ips = await module.exports.gatherIps(seBot.url);
             // Loop through each item in the JSON
                 // Check to see if the IP address exists in the existingIps
                 // If not add it to missingIps
