@@ -9,14 +9,16 @@ const bqTable = process.env.bqTable || null;
 const gServiceAccount = JSON.parse(process.env.gServiceAccount || null);
 const https = require('https');
 
-// Create bigQuery Obj
+// Check for ENV vars for BQ obj
 if(!!gServiceAccount && !!bqProjectId) {
+  // Create BQ obj
   const bigQuery = new BigQuery({
       credentials: gServiceAccount,
       projectId: bqProjectId
   });
 } else {
-  console.log('Missing BQ Credentials and Project ID')
+  // Throw an error if vars are missing
+  throw new Error('Missing BQ Credentials and Project ID');
 }
 
 module.exports = {
