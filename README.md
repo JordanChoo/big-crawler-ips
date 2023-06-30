@@ -2,7 +2,7 @@
 Welcome to Big Crawler IPs! This is a serverless function that routinely checks both Google and Bing's list of official crawler IP addresses and saves them into a BigQuery table.
 
 ## Deployment Guide
-*Coming soon!*
+[Watch the step by step deployment guide here](https://jordanchoo.com/blog/how-to-save-googlebot-bingbot-ip-addresses-to-bigquery/).
 
 ### Environment Variables
 When deploying Big Crawler IPs your Cloud Function needs the following environment variables:
