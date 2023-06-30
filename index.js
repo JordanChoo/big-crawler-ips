@@ -19,7 +19,7 @@ if(!!gServiceAccount && !!bqProjectId) {
   console.log('Missing BQ Credentials and Project ID')
 }
 
-modules.exports = {
+module.exports = {
 
     main: async(req,res) => {
         
