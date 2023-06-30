@@ -82,6 +82,7 @@ module.exports = {
         }
 
         // Return 200 success
+        console.log(message);
         return res.status(200).send(message);
 
     },
