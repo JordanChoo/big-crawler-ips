@@ -46,6 +46,7 @@ module.exports = {
         for (const seBot of seBots) {
             // Download the JSON from the URL
             let ips = await module.exports.gatherIps(seBot.url);
+            console.log(ips);
             // Check if existingIPS are empty
             if(existingIps.length > 0){
               // Loop through each item in the JSON
@@ -119,32 +120,32 @@ module.exports = {
 
     gatherIps: async(url) => {
 
-        // Run an HTTP req to the IP JSON file
-        https.get(url, (response) => {
-            let data = '';
-          
-            response.on('data', (chunk) => {
-              data += chunk;
-            });
-          
-            response.on('end', () => {
-              try {
-                
-                let ipsJson = JSON.parse(data);
-                return ipsJson
-
-              } catch (error) {
-                // Console log and return error
-                console.error('Error parsing JSON:', error.message);
-                return error;
-
-              }
-            });
+      try {
+        const response = await new Promise((resolve, reject) => {
+          https.get(url, (res) => {
+            resolve(res);
           }).on('error', (error) => {
-            // Console log and return error
-            console.error('Error retrieving JSON:', error.message);
-            return error;
+            reject(error);
           });
+        });
+    
+        let data = '';
+    
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+    
+        await new Promise((resolve) => {
+          response.on('end', () => {
+            resolve();
+          });
+        });
+    
+        const jsonObject = JSON.parse(data);
+        return jsonObject;
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
     },
 
     saveIps: async(req, res) => {
