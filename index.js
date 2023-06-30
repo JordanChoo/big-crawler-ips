@@ -27,11 +27,11 @@ module.exports = {
         
         const seBots = [
             {
-                name: 'googleBot',
+                se: 'googleBot',
                 url: 'https://developers.google.com/static/search/apis/ipranges/googlebot.json'
             },
             {
-                name: 'bingBot',
+                se: 'bingBot',
                 url: 'https://www.bing.com/toolbox/bingbot.json'
             }
         ]
@@ -88,7 +88,7 @@ module.exports = {
       return await bigquery
       .dataset(bqDataset)
       .createTable(bqTable, tableOptions);
-      
+
     },
 
     getExistingIps: async() => {
