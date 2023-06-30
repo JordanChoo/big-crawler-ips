@@ -95,7 +95,7 @@ module.exports = {
       // Construct the query
         let query = `
           SELECT
-            name,
+            se,
             ip
           FROM
           ${bqDataset}.${bqTable}
