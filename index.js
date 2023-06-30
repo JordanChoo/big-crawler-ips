@@ -37,7 +37,7 @@ module.exports = {
         ]
 
         // Get all of the existing IPs
-        const existingIps = await ExistingIps();
+        const existingIps = await module.exports.getExistingIps();
 
         // Go through each of the seBots
         for (const seBot of seBots) {
