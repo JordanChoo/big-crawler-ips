@@ -6,7 +6,7 @@ require('dotenv').config();
 const bqProjectId = process.env.bqProjectId || null;
 const bqDataset = process.env.bqDataset || null;
 const bqTable = process.env.bqTable || null;
-const gServiceAccount = JSON.parse(process.env.gServiceAccount);
+const gServiceAccount = JSON.parse(process.env.gServiceAccount || null);
 const https = require('https');
 
 // Create bigQuery Obj
