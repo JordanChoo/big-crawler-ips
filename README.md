@@ -6,10 +6,10 @@ Welcome to Big Crawler IPs! This is a serverless function that routinely checks 
 
 ### Environment Variables
 When deploying Big Crawler IPs your Cloud Function needs the following environment variables:
-`bqProjectId` - Your Google Cloud Project's ID
-`bqDataset` - The name of your BigQuery dataset 
-`bqTable` - The name of your table in BigQuery
-`gServiceAccount` - Your Google Cloud Service Account 
+- `bqProjectId`: Your Google Cloud Project's ID
+- `bqDataset`: The name of your BigQuery dataset 
+- `bqTable`: The name of your table in BigQuery
+- `gServiceAccount`: Your Google Cloud Service Account 
 
 ## How It Works
 Once the function is deployed as a Google Cloud Function that is triggered via a pub/sub cron job, the function then:
