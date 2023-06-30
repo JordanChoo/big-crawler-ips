@@ -10,10 +10,14 @@ const gServiceAccount = JSON.parse(process.env.gServiceAccount || null);
 const https = require('https');
 
 // Create bigQuery Obj
-const bigQuery = new BigQuery({
-    credentials: gServiceAccount,
-    projectId: bqProjectId
-});
+if(!!gServiceAccount && !!bqProjectId) {
+  const bigQuery = new BigQuery({
+      credentials: gServiceAccount,
+      projectId: bqProjectId
+  });
+} else {
+  console.log('Missing BQ Credentials and Project ID')
+}
 
 modules.exports = {
 
