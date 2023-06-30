@@ -53,6 +53,23 @@ module.exports = {
 
     },
 
+    checkBqTableExists: async(tableName) => {
+
+      // Get the BQ table reference
+      const dataset = bigquery.dataset(bqDataset);
+
+      // Attempt the check
+      try {
+        // Run the get request to see if there is a table
+        await dataset.table(tableName).get();
+        // return true if table
+        return true;
+      } catch (e) {
+        // return false if no table
+        return false;
+      }
+    },
+
     getExistingIps: async() => {
       // Construct the query
         let query = `
