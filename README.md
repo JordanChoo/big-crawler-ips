@@ -12,7 +12,7 @@ When deploying Big Crawler IPs your Cloud Function needs the following environme
 - `gServiceAccount`: Your Google Cloud Service Account 
 
 ## How It Works
-Once the function is deployed as a Google Cloud Function that is triggered via a pub/sub cron job, the function then:
+Once the function is deployed as a Google Cloud Function that is triggered via cron job HTTP request, the function then:
 1. Checks to make sure that your table exists and if it doesn't create one
 2. Gathers all of the existing IPs from your BigQuery table
 3. Scrapes the offical GoogleBot and BingBot IP address files
