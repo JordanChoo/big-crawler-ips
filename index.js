@@ -36,6 +36,12 @@ module.exports = {
             }
         ]
 
+        // Check to see if the table exists
+        if(! await module.exports.checkBqTableExists()){
+          // Create the table if it doesn't exist
+          await module.exports.createBqTable();
+        }
+
         // Get all of the existing IPs
         const existingIps = await module.exports.getExistingIps();
 
