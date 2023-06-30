@@ -170,9 +170,5 @@ module.exports = {
       } catch (error) {
         console.error('Error:', error.message);
       }
-    },
-
-    saveIps: async(req, res) => {
-
     }
 }
