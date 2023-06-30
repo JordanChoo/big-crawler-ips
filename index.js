@@ -75,8 +75,18 @@ module.exports = {
             
         }
 
+        let message;
         // Check to see the missingIps legnth
-            // If more than 0 push the rows to BQ
+        if(missingIps > 0){
+          // If more than 0 push the rows to BQ
+          let bqIpInsertResults = await bigQuery.dataset(bqDataset).table(bqSerpTable).insert(missingIps);
+          message = `${missingIps.length} additional IP addresses were found and added`
+        } else {
+          message = 'No new IP addresses found'
+        }
+
+        // Return 200 success
+        return res.status(200).send(message);
 
     },
 
