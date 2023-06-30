@@ -8,6 +8,7 @@ const bqDataset = process.env.bqDataset || null;
 const bqTable = process.env.bqTable || null;
 const gServiceAccount = JSON.parse(process.env.gServiceAccount || null);
 const https = require('https');
+const kgKey = process.env.kgKey || null;
 
 // Create BQ obj
 const bigQuery = new BigQuery({
@@ -18,70 +19,74 @@ const bigQuery = new BigQuery({
 module.exports = {
 
     main: async(req,res) => {
+      // Check to see if it is a POST Req
+      if(req.method != 'POST') return res.status(401).send('Not authorized');
+      // Check for KgKey
+      if(req.query.kgKey != kgKey) return res.status(401).send('Not authorized');
         
-        const seBots = [
-            {
-                se: 'googleBot',
-                url: 'https://developers.google.com/static/search/apis/ipranges/googlebot.json'
-            },
-            {
-                se: 'bingBot',
-                url: 'https://www.bing.com/toolbox/bingbot.json'
-            }
-        ]
+      const seBots = [
+          {
+              se: 'googleBot',
+              url: 'https://developers.google.com/static/search/apis/ipranges/googlebot.json'
+          },
+          {
+              se: 'bingBot',
+              url: 'https://www.bing.com/toolbox/bingbot.json'
+          }
+      ]
 
-        // Check to see if the table exists
-        if(! await module.exports.checkBqTableExists()){
-          // Create the table if it doesn't exist
-          await module.exports.createBqTable();
-        }
+      // Check to see if the table exists
+      if(! await module.exports.checkBqTableExists()){
+        // Create the table if it doesn't exist
+        await module.exports.createBqTable();
+      }
 
-        // Get all of the existing IPs
-        const existingIps = await module.exports.getExistingIps();
-        // Create an empty missing IPs obj
-        const missingIps = [];
-        // Go through each of the seBots
-        for (const seBot of seBots) {
-            // Download the JSON from the URL
-            let ips = await module.exports.gatherIps(seBot.url);
-            // Go through each of the IP addresses
-            for (let ip = 0; ip < ips.prefixes.length; ip++) {
-              // Check whether it is an IP4 or IP6
-              if(!!ips.prefixes[ip].ipv4Prefix){
-                // Check to see if the IPv4 address is already in BQ
-                if(!existingIps.some(el => el.ip === ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/')))){
-                  // Push the clean missing IPv4
-                  missingIps.push({
-                    se: seBot.se,
-                    ip: ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/'))
-                  });
-                }
-              } else {
-                // Check to see if the IPv6 address is already in BQ
-                if(!existingIps.some(el => el.ip === ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/')))){
-                  // Push the clean missing IPv6
-                  missingIps.push({
-                    se: seBot.se,
-                    ip: ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/'))
-                  });
-                }
+      // Get all of the existing IPs
+      const existingIps = await module.exports.getExistingIps();
+      // Create an empty missing IPs obj
+      const missingIps = [];
+      // Go through each of the seBots
+      for (const seBot of seBots) {
+          // Download the JSON from the URL
+          let ips = await module.exports.gatherIps(seBot.url);
+          // Go through each of the IP addresses
+          for (let ip = 0; ip < ips.prefixes.length; ip++) {
+            // Check whether it is an IP4 or IP6
+            if(!!ips.prefixes[ip].ipv4Prefix){
+              // Check to see if the IPv4 address is already in BQ
+              if(!existingIps.some(el => el.ip === ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/')))){
+                // Push the clean missing IPv4
+                missingIps.push({
+                  se: seBot.se,
+                  ip: ips.prefixes[ip].ipv4Prefix.substring(0, ips.prefixes[ip].ipv4Prefix.indexOf('/'))
+                });
+              }
+            } else {
+              // Check to see if the IPv6 address is already in BQ
+              if(!existingIps.some(el => el.ip === ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/')))){
+                // Push the clean missing IPv6
+                missingIps.push({
+                  se: seBot.se,
+                  ip: ips.prefixes[ip].ipv6Prefix.substring(0, ips.prefixes[ip].ipv6Prefix.indexOf('::/'))
+                });
               }
             }
-        }
+          }
+      }
 
-        let message;
-        // Check to see the missingIps legnth
-        if(missingIps.length > 0){
-          // If more than 0 push the rows to BQ
-          let bqIpInsertResults = await bigQuery.dataset(bqDataset).table(bqTable).insert(missingIps);
-          message = `${missingIps.length} additional IP addresses were found and added`
-        } else {
-          message = 'No new IP addresses found'
-        }
+      let message;
+      // Check to see the missingIps legnth
+      if(missingIps.length > 0){
+        // If more than 0 push the rows to BQ
+        let bqIpInsertResults = await bigQuery.dataset(bqDataset).table(bqTable).insert(missingIps);
+        message = `${missingIps.length} additional IP addresses were found and added`
+      } else {
+        message = 'No new IP addresses found'
+      }
 
-        // Return 200 success
-        console.log(message);
-        return res.status(200).send(message);
+      // Return 200 success
+      console.log(message);
+      return res.status(200).send(message);
 
     },
 
