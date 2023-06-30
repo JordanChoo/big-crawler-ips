@@ -8,7 +8,6 @@ const bqDataset = process.env.bqDataset || null;
 const bqTable = process.env.bqTable || null;
 const gServiceAccount = JSON.parse(process.env.gServiceAccount || null);
 const https = require('https');
-const ipaddr = require('ipaddr.js');
 
 // Create BQ obj
 const bigQuery = new BigQuery({
@@ -46,7 +45,6 @@ module.exports = {
         for (const seBot of seBots) {
             // Download the JSON from the URL
             let ips = await module.exports.gatherIps(seBot.url);
-            console.log(ips);
             // Check if existingIPS are empty
             if(existingIps.length > 0){
               // Loop through each item in the JSON
