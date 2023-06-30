@@ -122,7 +122,6 @@ module.exports = {
               try {
                 
                 let ipsJson = JSON.parse(data);
-                console.log(ipsJson);
                 return ipsJson
 
               } catch (error) {
