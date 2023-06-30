@@ -81,7 +81,7 @@ module.exports = {
       // Set the schema for the table
       let schema = [
         {name: 'se', type: 'STRING'},
-        {name: 'ip', type: 'INTEGER'},
+        {name: 'ip', type: 'STRING'},
       ];
 
       // Set the options
