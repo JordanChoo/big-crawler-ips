@@ -70,7 +70,7 @@ module.exports = {
                 // If not add it to missingIps
             } else {
               // Add all of the IPs to the missing IPs var
-              missingIps.push(cleanedIps);
+              missingIps.push(...cleanedIps);
             }
             
         }
