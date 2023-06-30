@@ -62,7 +62,7 @@ module.exports = {
     checkBqTableExists: async() => {
 
       // Get the BQ table reference
-      const dataset = bigquery.dataset(bqDataset);
+      const dataset = bigQuery.dataset(bqDataset);
 
       // Attempt the check
       try {
@@ -91,7 +91,7 @@ module.exports = {
       };
 
       // Return/run the BQ table creation
-      return await bigquery
+      return await bigQuery
       .dataset(bqDataset)
       .createTable(bqTable, tableOptions);
 
@@ -107,7 +107,7 @@ module.exports = {
           ${bqDataset}.${bqTable}
         `
       // Run the query as a job
-      let [bqIpJob] = await bigquery.createQueryJob({query:query});
+      let [bqIpJob] = await bigQuery.createQueryJob({query:query});
       // Wait for the query to finish
       let [existingIps] = await bqIpJob.getQueryResults();
       // Return the rows
