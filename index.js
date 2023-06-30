@@ -39,13 +39,21 @@ module.exports = {
         // Get all of the existing IPs
         const existingIps = await module.exports.getExistingIps();
 
+        const missingIps = [];
+
         // Go through each of the seBots
         for (const seBot of seBots) {
             // Download the JSON from the URL
             let ips = await module.exports.gatherIps(seBot.url);
-            // Loop through each item in the JSON
+            // Check if existingIPS are empty
+            if(existingIps.length > 0){
+              // Loop through each item in the JSON
                 // Check to see if the IP address exists in the existingIps
                 // If not add it to missingIps
+            } else {
+              // Add all of the IPs to the missing IPs var
+            }
+            
         }
 
         // Check to see the missingIps legnth
