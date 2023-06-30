@@ -8,6 +8,7 @@ const bqDataset = process.env.bqDataset || null;
 const bqTable = process.env.bqTable || null;
 const gServiceAccount = JSON.parse(process.env.gServiceAccount || null);
 const https = require('https');
+const ipaddr = require('ipaddr.js');
 
 // Create BQ obj
 const bigQuery = new BigQuery({

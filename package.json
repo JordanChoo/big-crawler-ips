@@ -11,6 +11,9 @@
   "dependencies": {
     "@google-cloud/bigquery": "^6.2.0",
     "@google-cloud/functions-framework": "^3.2.1",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "install": "^0.13.0",
+    "ipaddr.js": "^2.1.0",
+    "npm": "^9.7.2"
   }
 }
